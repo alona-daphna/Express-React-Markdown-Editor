@@ -3,20 +3,22 @@ import db from '../utils/db.js';
 const createFile = async (req, res) => {
   const { name, content } = req.body;
 
-  return new Promise((resolve, reject) => {
-    db.run(
-      'INSERT INTO files (name, content) VALUES (?, ?)',
-      [name, content],
-      (err) => {
-        if (err) {
-          console.log(err);
-          reject(err);
-        } else {
-          resolve({ id: this.lastID, name, content });
-        }
-      }
+  try {
+    const result = await db.query(
+      'INSERT INTO files (name, content) VALUES ($1, $2) RETURNING id, name, content',
+      [name ? name : 'Untitled', content]
     );
-  });
+
+    console.log(result);
+    if (result.rows.length > 0) {
+      res.status(201).json({ file: result.rows[0] });
+    } else {
+      res.status(500).json({ error: 'Failed to create file' });
+    }
+  } catch (err) {
+    console.log(err.message);
+    res.status(500).json({ error: 'Failed to create file' });
+  }
 };
 
 const updateFile = async (req, res) => {
@@ -27,43 +29,55 @@ const updateFile = async (req, res) => {
   const queryParams = [];
 
   if (name) {
-    updateFile += ' name = ?';
+    updateQuery += ` name = $${queryParams.length + 1},`;
     queryParams.push(name);
   }
 
   if (content) {
-    updateFile += ' content = ?';
+    updateQuery += ` content = $${queryParams.length + 1},`;
     queryParams.push(content);
   }
 
-  updateQuery += ' WHERE id = ?';
+  updateQuery += ` updated_at = current_timestamp`;
+
+  updateQuery += ` WHERE id = $${
+    queryParams.length + 1
+  } RETURNING id, name, content`;
   queryParams.push(fileId);
 
-  db.run(updateQuery, queryParams, (err) => {
-    if (err) {
-      console.log(err);
-      return res
-        .status(500)
-        .json({ error: 'An error occurred while updating the file.' });
+  console.log(updateQuery);
+  console.log(queryParams);
+
+  try {
+    const result = await db.query(updateQuery, queryParams);
+    if (result.rows.length > 0) {
+      res.status(200).json({ file: result.rows[0] });
     } else {
-      res.status(200);
+      res.status(404).json({ error: 'File not found' });
     }
-  });
+  } catch (err) {
+    console.log(err.message);
+    res.status(500).json({ error: 'Failed to update file' });
+  }
 };
 
 const deleteFile = async (req, res) => {
   const fileId = req.params.id;
 
-  db.run('DELETE FROM files WHERE id = ?', [fileId], (err) => {
-    if (err) {
-      console.log(err);
-      res
-        .status(500)
-        .json({ error: 'An error occured while deleting the file' });
+  try {
+    const result = await db.query(
+      'DELETE FROM files WHERE id = $1 RETURNING id',
+      [fileId]
+    );
+    if (result.rowCount > 0) {
+      res.status(200).send('deleted');
     } else {
-      res.json(200);
+      res.status(404).json({ error: 'File not found' });
     }
-  });
+  } catch (err) {
+    console.log(err.message);
+    res.status(500).json({ error: 'Failed to delete file' });
+  }
 };
 
 export { updateFile, createFile, deleteFile };

@@ -4,7 +4,7 @@ import cors from 'cors';
 import { root, schema } from './utils/graphql.js';
 import { graphqlHTTP } from 'express-graphql';
 import fileRouter from './routes/fileRoutes.js';
-import { basicAuthMiddleware } from './utils/basicAuth.js';
+import { generateAccessToken, authMiddleware } from './utils/auth.js';
 
 dotenv.config();
 
@@ -16,6 +16,7 @@ const app = express();
 const PORT = process.env.PORT || 4000;
 
 app.use(cors(corsOptions));
+app.use(express.json());
 app.use(
   '/graphql',
   graphqlHTTP({
@@ -24,7 +25,16 @@ app.use(
     graphiql: true,
   })
 );
-app.use('/files', basicAuthMiddleware, fileRouter);
+app.use('/files', authMiddleware, fileRouter);
+app.post('/login', (req, res) => {
+  const { password } = req.body;
+
+  if (password === process.env.PASSWORD) {
+    res.json({ token: generateAccessToken() });
+  } else {
+    res.status(401).send('unauthorized');
+  }
+});
 
 app.listen(PORT, () => {
   console.log('REST server running on port ' + PORT);
