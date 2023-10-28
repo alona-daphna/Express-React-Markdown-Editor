@@ -32,7 +32,7 @@ function App() {
             <Preview content={content} isFullScreen={showFull} />
           ) : (
             <>
-              <Editor setContent={setContent} />
+              <Editor setContent={setContent} content={content} />
               <Preview content={content} isFullScreen={showFull} />
             </>
           )}
