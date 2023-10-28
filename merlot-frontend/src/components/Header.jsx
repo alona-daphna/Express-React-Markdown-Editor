@@ -1,20 +1,9 @@
 import React, { useState } from 'react';
 import { CgMenuLeft } from 'react-icons/cg';
+import { ModeToggle } from './ModeToggle';
 
 export const Header = ({ toggleSidebar, toggleFullView, isFull }) => {
   const [showModal, setShowModal] = useState(false);
-
-  const handleTheme = () => {
-    const currTheme = localStorage.getItem('theme');
-
-    if (!currTheme || currTheme === 'light') {
-      document.querySelector('body')?.setAttribute('data-theme', 'dark');
-      localStorage.setItem('theme', 'dark');
-    } else {
-      document.querySelector('body')?.setAttribute('data-theme', 'light');
-      localStorage.setItem('theme', 'light');
-    }
-  };
 
   const toggleModal = () => {
     setShowModal((prev) => !prev);
@@ -59,7 +48,7 @@ export const Header = ({ toggleSidebar, toggleFullView, isFull }) => {
           </button>
         </div>
         <div className="right">
-          <button onClick={handleTheme}>mode</button>
+          <ModeToggle />
           <button onClick={() => toggleFullView((prev) => !prev)}>
             {isFull ? 'Editor' : 'Full'}
           </button>

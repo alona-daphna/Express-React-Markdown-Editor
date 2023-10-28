@@ -40,7 +40,35 @@ button:hover {
   cursor: pointer;
 }
 
-.app main {
+input {
+  background: var(--background-low);
+  border-radius: 6px;
+  height: 2.2rem;
+  font-size: 1rem;
+  padding: 0 10px;
+  font-family: 'Montserrat', sans-serif;
+}
+
+.login {
+  width: 400px;
+  aspect-ratio: 1/1;
+  display: flex;
+  flex-direction: column;
+  margin: 20rem auto 0;
+  font-family: 'Montserrat', sans-serif;
+  gap: 15px;
+
+  button {
+    width: fit-content;
+    align-self: center;
+  }
+}
+
+.login-mode-toggle {
+  margin: 5px 0 0 5px;
+}
+
+.home main {
   display: flex;
   height: 100%;
   min-height: 100vh;
@@ -82,15 +110,6 @@ button:hover {
   gap: 20px;
 
   label {
-    font-family: 'Montserrat', sans-serif;
-  }
-
-  input {
-    background: var(--background-low);
-    border-radius: 6px;
-    height: 2.2rem;
-    font-size: 1rem;
-    padding: 0 10px;
     font-family: 'Montserrat', sans-serif;
   }
 

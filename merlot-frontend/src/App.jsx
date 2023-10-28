@@ -1,44 +1,19 @@
-import { useState, useEffect } from 'react';
-import { Sidebar } from './components/sidebar';
-import { Editor } from './components/Editor';
-import { Preview } from './components/Preview';
-import { Header } from './components/Header';
+import { Login } from './pages/Login';
+import { BrowserRouter, Route, Routes, Navigate } from 'react-router-dom';
+import Home from './pages/Home';
+import { ProtectedRoute } from './components/ProtectedRoute';
 
 function App() {
-  const [showSidebar, setShowSidebar] = useState(true);
-  const [showFull, setShowFull] = useState(false);
-  const [sidebarWidth, setSidebarWidth] = useState(null);
-  const [content, setContent] = useState('');
-
-  useEffect(() => {
-    const rootStyles = getComputedStyle(document.documentElement);
-    setSidebarWidth(rootStyles.getPropertyValue('--sidebar-width'));
-  }, []);
-
+  console.log(localStorage.getItem('token'));
   return (
-    <div className="app">
-      <Header
-        toggleSidebar={setShowSidebar}
-        toggleFullView={setShowFull}
-        isFull={showFull}
-      />
-      <main>
-        {showSidebar && <Sidebar />}
-        <div
-          className="content"
-          style={{ marginLeft: showSidebar ? sidebarWidth : 0 }}
-        >
-          {showFull ? (
-            <Preview content={content} isFullScreen={showFull} />
-          ) : (
-            <>
-              <Editor setContent={setContent} content={content} />
-              <Preview content={content} isFullScreen={showFull} />
-            </>
-          )}
-        </div>
-      </main>
-    </div>
+    <BrowserRouter>
+      <Routes>
+        <Route element={<ProtectedRoute />}>
+          <Route path="/" element={<Home />} />
+        </Route>
+        <Route path="/login" element={<Login />} />
+      </Routes>
+    </BrowserRouter>
   );
 }
 
