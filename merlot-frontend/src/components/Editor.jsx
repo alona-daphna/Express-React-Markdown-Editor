@@ -1,6 +1,18 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 
 export const Editor = ({ setContent, content }) => {
+  useEffect(() => {
+    window.addEventListener('fileCreated', (e) => {
+      setContent('');
+    });
+
+    return () => {
+      window.removeEventListener('fileCreated', (e) => {
+        setContent('');
+      });
+    };
+  }, []);
+
   return (
     <div className="editor">
       <textarea

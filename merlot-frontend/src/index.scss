@@ -134,6 +134,7 @@ input {
   justify-content: space-between;
   align-items: center;
   padding-top: 10px;
+  z-index: 1;
 
   .right {
     display: flex;
@@ -156,9 +157,34 @@ input {
   position: fixed;
   top: 0;
   left: 0;
-  z-index: -1;
   background: var(--background-mid);
   width: var(--sidebar-width);
+  padding-top: 50px;
+
+  .file-list {
+    height: 90%;
+    overflow-y: scroll;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+
+  .active {
+    background: var(--background-low);
+  }
+
+  .file {
+    transition: background 0.2s ease-in-out;
+    border-radius: 6px;
+    padding: 10px;
+    margin: 0 10px;
+    font-family: 'Sometype Mono', monospace;
+    font-size: 0.9rem;
+    cursor: pointer;
+  }
+  .file:hover {
+    background: var(--background-low);
+  }
 }
 
 .editor {

@@ -6,12 +6,11 @@ const createFile = async (req, res) => {
   try {
     const result = await db.query(
       'INSERT INTO files (name, content) VALUES ($1, $2) RETURNING id, name, content',
-      [name ? name : 'Untitled', content]
+      [name ? name : 'Untitled', content ? content : '']
     );
 
-    console.log(result);
     if (result.rows.length > 0) {
-      res.status(201).json({ file: result.rows[0] });
+      res.status(201).json(result.rows[0]);
     } else {
       res.status(500).json({ error: 'Failed to create file' });
     }
@@ -45,13 +44,10 @@ const updateFile = async (req, res) => {
   } RETURNING id, name, content`;
   queryParams.push(fileId);
 
-  console.log(updateQuery);
-  console.log(queryParams);
-
   try {
     const result = await db.query(updateQuery, queryParams);
     if (result.rows.length > 0) {
-      res.status(200).json({ file: result.rows[0] });
+      res.status(200).json(result.rows[0]);
     } else {
       res.status(404).json({ error: 'File not found' });
     }

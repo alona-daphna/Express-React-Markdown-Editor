@@ -1,9 +1,12 @@
-import React, { useState } from 'react';
+import React, { useContext, useRef, useState } from 'react';
 import { CgMenuLeft } from 'react-icons/cg';
 import { ModeToggle } from './ModeToggle';
+import { createFile } from '../api';
+import { CurrFileContext } from '../context/currFileContext';
 
 export const Header = ({ toggleSidebar, toggleFullView, isFull }) => {
   const [showModal, setShowModal] = useState(false);
+  const fileName = useRef(null);
 
   const toggleModal = () => {
     setShowModal((prev) => !prev);
@@ -16,8 +19,23 @@ export const Header = ({ toggleSidebar, toggleFullView, isFull }) => {
     }
   };
 
-  const handleNewFile = () => {
-    toggleModal();
+  const handleNewFile = async () => {
+    const response = await createFile({
+      name: fileName.current.value,
+      content: '',
+    });
+
+    if (!response.ok) {
+      console.log(await response.json());
+    } else {
+      const file = await response.json();
+      window.dispatchEvent(
+        new CustomEvent('fileCreated', {
+          detail: { name: file.name, id: file.id },
+        })
+      );
+      toggleModal();
+    }
   };
 
   return (
@@ -27,7 +45,7 @@ export const Header = ({ toggleSidebar, toggleFullView, isFull }) => {
           <div className="modal-bg"></div>
           <div className="modal-content">
             <label>File name</label>
-            <input type="text" />
+            <input ref={fileName} type="text" />
             <div className="action">
               <button onClick={toggleModal}>cancel</button>
               <button onClick={handleNewFile}>create</button>
