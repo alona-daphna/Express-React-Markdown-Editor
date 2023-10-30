@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { useQuery } from '@apollo/client';
-import { GET_FILE_NAMES, deleteFile } from '../api';
+import { GET_FILE_NAMES, deleteFile, updateFile } from '../api';
 import { CurrFileContext } from '../context/currFileContext';
 
 export const Sidebar = () => {
@@ -9,6 +9,7 @@ export const Sidebar = () => {
   const { refetch } = useQuery(GET_FILE_NAMES, {
     skip: true,
   });
+  let timeout = null;
 
   const handleDeleteFile = async (id) => {
     const index = files.findIndex((file) => file.id === id);
@@ -26,6 +27,23 @@ export const Sidebar = () => {
     const { name, id } = e.detail;
     setFiles((prev) => [{ name, id }, ...prev]);
     setCurrFile(id);
+  };
+
+  const handleFileRename = async (title) => {
+    console.log(title);
+    console.log(currFile);
+    if (timeout) clearTimeout(timeout);
+    timeout = setTimeout(async () => {
+      const response = await updateFile(currFile, {
+        name: title,
+      });
+
+      if (!response.ok) {
+        console.log(await response.json());
+      } else {
+        console.log('rename');
+      }
+    }, 1000);
   };
 
   useEffect(() => {
@@ -55,7 +73,12 @@ export const Sidebar = () => {
             className={`file ${file.id === currFile ? 'active' : ''}`}
             key={index}
           >
-            <span>{file.name}</span>
+            <span
+              onInput={(e) => handleFileRename(e.target.innerHTML)}
+              contentEditable={true}
+            >
+              {file.name}
+            </span>
             <span
               onClick={() => handleDeleteFile(file.id)}
               className="delete-file-btn"
