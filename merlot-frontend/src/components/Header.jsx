@@ -3,10 +3,13 @@ import { CgMenuLeft } from 'react-icons/cg';
 import { ModeToggle } from './ModeToggle';
 import { createFile } from '../api';
 import { CurrFileContext } from '../context/currFileContext';
+import { useNavigate } from 'react-router-dom';
 
 export const Header = ({ toggleSidebar, toggleFullView, isFull }) => {
   const [showModal, setShowModal] = useState(false);
   const fileName = useRef(null);
+  const { currFile, setCurrFile } = useContext(CurrFileContext);
+  const navigate = useNavigate();
 
   const toggleModal = () => {
     setShowModal((prev) => !prev);
@@ -29,6 +32,7 @@ export const Header = ({ toggleSidebar, toggleFullView, isFull }) => {
       console.log(await response.json());
     } else {
       const file = await response.json();
+      setCurrFile(file.id);
       window.dispatchEvent(
         new CustomEvent('fileCreated', {
           detail: { name: file.name, id: file.id },
@@ -67,6 +71,9 @@ export const Header = ({ toggleSidebar, toggleFullView, isFull }) => {
         </div>
         <div className="right">
           <ModeToggle />
+          <button onClick={() => navigate(`/preview/${currFile}`)}>
+            Share
+          </button>
           <button onClick={() => toggleFullView((prev) => !prev)}>
             {isFull ? 'Editor' : 'Full'}
           </button>

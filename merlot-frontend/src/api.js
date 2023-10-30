@@ -10,7 +10,7 @@ export const createFile = (file) => {
     body: JSON.stringify(file),
     headers: {
       'Content-Type': 'application/json',
-      Authorization: 'Bearer ' + token,
+      authorization: 'Bearer ' + token,
     },
   });
 };
@@ -19,7 +19,7 @@ export const deleteFile = (id) => {
   return fetch(BASE_URL + 'files/' + id, {
     method: 'DELETE',
     headers: {
-      Authorization: 'Bearer ' + token,
+      authorization: 'Bearer ' + token,
     },
   });
 };
@@ -30,7 +30,7 @@ export const updateFile = (id, file) => {
     body: JSON.stringify(file),
     headers: {
       'Content-Type': 'application/json',
-      Authorization: 'Bearer ' + token,
+      authorization: 'Bearer ' + token,
     },
   });
 };

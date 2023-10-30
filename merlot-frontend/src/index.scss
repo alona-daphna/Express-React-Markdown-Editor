@@ -6,6 +6,9 @@
   --background-low: #474c50;
   --text-color: #fff;
   --sidebar-width: 270px;
+  --active-bg: #626569;
+  --translucent: rgba(47, 52, 55, 0.9);
+  --transparent: rgba(47, 52, 55, 0);
 }
 
 [data-theme='light'] {
@@ -13,6 +16,9 @@
   --background-mid: #f3f4f6;
   --background-low: #dcdfe4;
   --text-color: #000;
+  --active-bg: #cbcfd6;
+  --translucent: rgba(249, 250, 251, 0.8);
+  --transparent: rgba(249, 250, 251, 0);
 }
 
 body {
@@ -129,12 +135,17 @@ input {
   position: fixed;
   top: 0;
   width: 100%;
-  height: 40px;
+  height: 50px;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding-top: 10px;
+  padding: 10px 0 20px;
   z-index: 1;
+  background: linear-gradient(
+    to bottom,
+    var(--translucent) 60%,
+    var(--transparent)
+  );
 
   .right {
     display: flex;
@@ -163,7 +174,7 @@ input {
 
   .file-list {
     height: 90%;
-    overflow-y: scroll;
+    overflow-y: auto;
     display: flex;
     flex-direction: column;
     gap: 2px;
@@ -176,14 +187,38 @@ input {
   .file {
     transition: background 0.2s ease-in-out;
     border-radius: 6px;
-    padding: 10px;
     margin: 0 10px;
+    padding: 6px;
     font-family: 'Sometype Mono', monospace;
     font-size: 0.9rem;
     cursor: pointer;
+    display: flex;
+    justify-content: space-between;
   }
+
+  .file > * {
+    padding: 4px;
+  }
+
   .file:hover {
     background: var(--background-low);
+  }
+
+  .delete-file-btn {
+    visibility: hidden;
+    transition: background 0.2s ease-in-out;
+    border-radius: 6px;
+    height: 100%;
+    aspect-ratio: 1/1;
+    text-align: center;
+  }
+
+  .delete-file-btn:hover {
+    background: var(--active-bg);
+  }
+
+  .file:hover .delete-file-btn {
+    visibility: visible;
   }
 }
 
@@ -208,6 +243,7 @@ input {
   flex: 1;
   font-family: 'Montserrat', sans-serif;
   line-height: 1.7rem;
+  margin: auto;
   margin-bottom: 100px;
   height: fit-content;
 
@@ -244,4 +280,61 @@ hr {
   padding-left: 10px;
   border-radius: 6px;
   margin: 10px 0;
+}
+
+.preview-page {
+  max-width: 900px;
+  margin: 7rem auto 0;
+  padding: 0 40px;
+}
+
+.mode-wrapper {
+  padding: 1rem;
+}
+
+@media screen and (max-width: 800px) {
+  h1 {
+    font-size: 1.5rem;
+  }
+  p,
+  li,
+  textarea {
+    font-size: 0.9rem;
+  }
+  .preview-page {
+    margin: 3rem;
+    width: 80%;
+    padding: 0;
+  }
+
+  .editor {
+    overflow-y: hidden;
+  }
+
+  .header {
+    padding-right: 25px;
+  }
+
+  .preview {
+    padding: 4rem !important;
+  }
+}
+
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #888;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #555;
 }

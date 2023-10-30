@@ -3,6 +3,7 @@ import { BrowserRouter, Route, Routes, Navigate } from 'react-router-dom';
 import Home from './pages/Home';
 import { ProtectedRoute } from './components/ProtectedRoute';
 import { CurrFileProvider } from './context/currFileContext';
+import { PreviewPage } from './pages/PreviewPage';
 
 function App() {
   return (
@@ -13,6 +14,7 @@ function App() {
             <Route path="/" element={<Home />} />
           </Route>
           <Route path="/login" element={<Login />} />
+          <Route path="/preview/:id" element={<PreviewPage />} />
         </Routes>
       </CurrFileProvider>
     </BrowserRouter>

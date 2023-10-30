@@ -13,10 +13,10 @@ export const authMiddleware = (req, res, next) => {
   const authHeader = req.headers['authorization'];
   const token = authHeader && authHeader.split(' ')[1];
 
-  if (token == null) return res.status(401).send('unauthorized');
+  if (token == null) return res.status(401).json({ error: 'unauthorized' });
 
   jwt.verify(token, process.env.TOKEN_SECRET, (err) => {
-    if (err) return res.status(401).send('unauthorized');
+    if (err) return res.status(401).json({ error: 'unauthorized' });
 
     next();
   });
