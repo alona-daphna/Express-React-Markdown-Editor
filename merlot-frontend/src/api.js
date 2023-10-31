@@ -45,6 +45,18 @@ export const generateAccessToken = (password) => {
   });
 };
 
+export const generatePreviewToken = (fileId) => {
+  return fetch(BASE_URL + 'auth/generatePreviewToken/' + fileId, {
+    headers: {
+      authorization: 'Bearer ' + token,
+    },
+  });
+};
+
+export const getPreview = (token) => {
+  return fetch(BASE_URL + 'files/preview/' + token);
+};
+
 export const GET_FILE_NAMES = gql`
   query {
     files {

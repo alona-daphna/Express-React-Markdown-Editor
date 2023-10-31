@@ -1,10 +1,10 @@
 import express from 'express';
-import { generatePreviewLink, login } from '../controllers/authController.js';
+import { generatePreviewToken, login } from '../controllers/authController.js';
 import { authMiddleware } from '../utils/auth.js';
 
 const router = express.Router();
 
 router.post('/login', login);
-router.get('/generatePreviewLink/:fileId', authMiddleware, generatePreviewLink);
+router.get('/generatePreviewToken/:fileId', generatePreviewToken);
 
 export default router;

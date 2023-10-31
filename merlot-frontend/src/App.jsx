@@ -14,7 +14,7 @@ function App() {
             <Route path="/" element={<Home />} />
           </Route>
           <Route path="/login" element={<Login />} />
-          <Route path="/preview/:id" element={<PreviewPage />} />
+          <Route path="/preview/:token" element={<PreviewPage />} />
         </Routes>
       </CurrFileProvider>
     </BrowserRouter>

@@ -1,7 +1,7 @@
 import React, { useContext, useRef, useState } from 'react';
 import { CgMenuLeft } from 'react-icons/cg';
 import { ModeToggle } from './ModeToggle';
-import { createFile } from '../api';
+import { createFile, generatePreviewToken } from '../api';
 import { CurrFileContext } from '../context/currFileContext';
 import { useNavigate } from 'react-router-dom';
 
@@ -42,6 +42,17 @@ export const Header = ({ toggleSidebar, toggleFullView, isFull }) => {
     }
   };
 
+  const handleShare = async () => {
+    const response = await generatePreviewToken(currFile);
+
+    if (!response.ok) {
+      console.log(await response.json());
+    } else {
+      const { token } = await response.json();
+      navigate(`/preview/${token}`);
+    }
+  };
+
   const handleKeyPress = (key) => {
     if (key == 'Enter') {
       handleNewFile();
@@ -77,9 +88,7 @@ export const Header = ({ toggleSidebar, toggleFullView, isFull }) => {
         </div>
         <div className="right">
           <ModeToggle />
-          <button onClick={() => navigate(`/preview/${currFile}`)}>
-            Share
-          </button>
+          <button onClick={handleShare}>Share</button>
           <button onClick={() => toggleFullView((prev) => !prev)}>
             {isFull ? 'Editor' : 'Full'}
           </button>

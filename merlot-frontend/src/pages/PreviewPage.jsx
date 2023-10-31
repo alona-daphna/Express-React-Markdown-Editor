@@ -1,24 +1,23 @@
-import { useQuery } from '@apollo/client';
 import React, { useEffect, useState } from 'react';
-import { GET_FILE_CONTENT } from '../api';
 import { useParams } from 'react-router-dom';
 import ReactMarkdown from 'react-markdown';
 import { ModeToggle } from '../components/ModeToggle';
+import { getPreview } from '../api';
 
 export const PreviewPage = () => {
   const [content, setContent] = useState('');
-  const { id } = useParams();
-  const { refetch } = useQuery(GET_FILE_CONTENT, {
-    skip: true,
-    variables: {
-      id: 0,
-    },
-  });
+  const { token } = useParams();
 
   useEffect(() => {
     const fetchFile = async () => {
-      const { data } = await refetch({ id });
-      setContent(data.file.content);
+      const response = await getPreview(token);
+
+      if (!response.ok) {
+        console.log(await response.json());
+      } else {
+        const { content } = await response.json();
+        setContent(content);
+      }
     };
 
     fetchFile();

@@ -19,6 +19,10 @@ export const BASE_URL = process.env.BASE_URL || `http://localhost:${PORT}/`;
 
 app.use(cors(corsOptions));
 app.use(express.json());
+app.use(authMiddleware);
+
+app.use('/files', fileRouter);
+app.use('/auth', authRouter);
 app.use(
   '/graphql',
   graphqlHTTP({
@@ -27,8 +31,6 @@ app.use(
     graphiql: true,
   })
 );
-app.use('/files', authMiddleware, fileRouter);
-app.use('/auth', authRouter);
 
 app.listen(PORT, () => {
   console.log('REST server running on port ' + PORT);

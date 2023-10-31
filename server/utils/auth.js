@@ -16,7 +16,10 @@ export const generatePasscode = () => {
 export const passcodeToFileMap = new Map();
 
 export const authMiddleware = (req, res, next) => {
-  if (req.path.startsWith('/preview/')) {
+  if (
+    req.path.startsWith('/files/preview/') ||
+    req.path.startsWith('/auth/login')
+  ) {
     return next();
   }
   const authHeader = req.headers['authorization'];

@@ -1,11 +1,8 @@
-import dotenv from 'dotenv';
 import {
   generateAccessToken,
   generatePasscode,
   passcodeToFileMap,
 } from '../utils/auth.js';
-
-dotenv.config();
 
 export const login = (req, res) => {
   const { password } = req.body;
@@ -17,10 +14,9 @@ export const login = (req, res) => {
   }
 };
 
-export const generatePreviewLink = (req, res) => {
+export const generatePreviewToken = (req, res) => {
   const fileId = req.params.fileId;
   const passcode = generatePasscode() + generatePasscode();
   passcodeToFileMap.set(passcode, fileId);
-  const previewLink = process.env.BASE_URL + `files/preview/${passcode}`;
-  res.json({ previewLink });
+  res.json({ token: passcode });
 };
