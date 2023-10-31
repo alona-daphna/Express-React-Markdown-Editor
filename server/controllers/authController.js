@@ -17,6 +17,13 @@ export const login = (req, res) => {
 export const generatePreviewToken = (req, res) => {
   const fileId = req.params.fileId;
   const passcode = generatePasscode() + generatePasscode();
+  const keyToDelete = [...passcodeToFileMap.entries()].find(
+    ([, value]) => value === fileId
+  )?.[0];
+
+  if (keyToDelete) {
+    passcodeToFileMap.delete(keyToDelete);
+  }
   passcodeToFileMap.set(passcode, fileId);
   res.json({ token: passcode });
 };
