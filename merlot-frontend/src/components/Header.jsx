@@ -42,14 +42,20 @@ export const Header = ({ toggleSidebar, toggleFullView, isFull }) => {
     }
   };
 
+  const handleKeyPress = (key) => {
+    if (key == 'Enter') {
+      handleNewFile();
+    }
+  };
+
   return (
     <>
       {showModal && (
-        <div className="modal-overlay">
+        <div className="modal-overlay" onKeyDown={(e) => handleKeyPress(e.key)}>
           <div className="modal-bg"></div>
           <div className="modal-content">
             <label>File name</label>
-            <input ref={fileName} type="text" />
+            <input autoFocus ref={fileName} type="text" />
             <div className="action">
               <button onClick={toggleModal}>cancel</button>
               <button onClick={handleNewFile}>create</button>

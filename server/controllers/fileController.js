@@ -1,3 +1,4 @@
+import { passcodeToFileMap } from '../utils/auth.js';
 import db from '../utils/db.js';
 
 const createFile = async (req, res) => {
@@ -76,4 +77,18 @@ const deleteFile = async (req, res) => {
   }
 };
 
-export { updateFile, createFile, deleteFile };
+const previewFile = async (req, res) => {
+  const passcode = req.params.passcode;
+
+  if (passcodeToFileMap.has(passcode)) {
+    const fileId = passcodeToFileMap.get(passcode);
+    const article = (
+      await db.query('SELECT content FROM files WHERE id = $1', [fileId])
+    ).rows[0];
+    res.json(article);
+  } else {
+    res.status(401).send('Unauthorized - Invalid passcode');
+  }
+};
+
+export { updateFile, createFile, deleteFile, previewFile };

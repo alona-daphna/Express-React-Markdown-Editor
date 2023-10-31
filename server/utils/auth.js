@@ -9,7 +9,16 @@ export const generateAccessToken = () => {
   return jwt.sign({}, process.env.TOKEN_SECRET);
 };
 
+export const generatePasscode = () => {
+  return Math.random().toString(36).substring(2);
+};
+
+export const passcodeToFileMap = new Map();
+
 export const authMiddleware = (req, res, next) => {
+  if (req.path.startsWith('/preview/')) {
+    return next();
+  }
   const authHeader = req.headers['authorization'];
   const token = authHeader && authHeader.split(' ')[1];
 

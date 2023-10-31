@@ -43,7 +43,7 @@ export const Sidebar = () => {
       } else {
         console.log('rename');
       }
-    }, 1000);
+    }, 500);
   };
 
   useEffect(() => {

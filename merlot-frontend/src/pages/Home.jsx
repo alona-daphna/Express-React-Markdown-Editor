@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { Sidebar } from '../components/sidebar';
 import { Editor } from '../components/Editor';
 import { Preview } from '../components/Preview';
@@ -10,6 +10,7 @@ function Home() {
   const [sidebarWidth, setSidebarWidth] = useState(null);
   const [content, setContent] = useState('');
   const [isMobileView, setIsMobileView] = useState(false);
+  const [isShiftPressed, setIsShiftPressed] = useState(false);
 
   useEffect(() => {
     const handleResize = () => {
@@ -27,14 +28,19 @@ function Home() {
 
     handleResize();
 
+    window.addEventListener('keydown', handleKeyDown);
+
     return () => {
       window.removeEventListener('fileCreated', () => {
         setContent('');
       });
 
       window.removeEventListener('resize', handleResize);
+      window.removeEventListener('keydown', handleKeyDown);
     };
   }, []);
+
+  const handleKeyDown = (e) => {};
 
   return (
     <div className="home">

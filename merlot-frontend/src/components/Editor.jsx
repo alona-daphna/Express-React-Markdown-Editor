@@ -64,6 +64,7 @@ export const Editor = ({ setContent, content }) => {
   return (
     <div className="editor">
       <textarea
+        autoFocus
         onInput={(e) => handleInputChange(e.target.value)}
         value={content}
         placeholder="Say something"

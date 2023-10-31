@@ -36,7 +36,7 @@ export const updateFile = (id, file) => {
 };
 
 export const generateAccessToken = (password) => {
-  return fetch(BASE_URL + 'login', {
+  return fetch(BASE_URL + 'auth/login', {
     method: 'POST',
     body: JSON.stringify(password),
     headers: {
