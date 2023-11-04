@@ -140,7 +140,7 @@ input {
   justify-content: space-between;
   align-items: center;
   padding: 10px 0 20px;
-  z-index: 1;
+  z-index: 2;
   background: linear-gradient(
     to bottom,
     var(--translucent) 60%,
@@ -171,6 +171,7 @@ input {
   background: var(--background-mid);
   width: var(--sidebar-width);
   padding-top: 50px;
+  z-index: 1;
 
   .file-list {
     height: 90%;

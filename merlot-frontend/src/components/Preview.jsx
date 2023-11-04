@@ -16,6 +16,10 @@ const Hr = () => {
   return <hr />;
 };
 
+const Br = () => {
+  return <br />;
+};
+
 export const Preview = ({ content, isFullScreen, setContent }) => {
   const { currFile } = useContext(CurrFileContext);
   const { refetch } = useQuery(GET_FILE_CONTENT, {
@@ -24,6 +28,10 @@ export const Preview = ({ content, isFullScreen, setContent }) => {
       id: 0,
     },
   });
+
+  // useEffect(() => {
+  //   setContent((prev) => prev.replace(/\n/gi, '\n &nbsp;'));
+  // }, [content]);
 
   useEffect(() => {
     const fetchContent = async () => {
@@ -42,8 +50,9 @@ export const Preview = ({ content, isFullScreen, setContent }) => {
       }}
     >
       <ReactMarkdown
-        components={{ blockquote: Blockquote, code: Code, hr: Hr }}
+        components={{ blockquote: Blockquote, code: Code, hr: Hr, br: Br }}
       >
+        {/* {content.replace(/\n/gi, '\n &nbsp;')} */}
         {content}
       </ReactMarkdown>
     </div>

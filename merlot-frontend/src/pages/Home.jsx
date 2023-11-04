@@ -57,6 +57,7 @@ function Home() {
           className="content"
           style={{
             marginLeft: showSidebar && !isMobileView ? sidebarWidth : 0,
+            filter: showSidebar && isMobileView ? 'brightness(50%)' : 'none',
           }}
         >
           {showFull ? (
